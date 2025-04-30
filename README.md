@@ -7,14 +7,12 @@ This document details the process undertaken to analyze and cleanse the provided
 ## 2. Workflow Overview
 
 The data cleansing process followed these general steps:
-![Image](https://github.com/user-attachments/assets/850788f8-e9e8-4f81-bd89-c036797951ee)
-
 1.  **Extraction & Initial Transformation:** Raw data was extracted from a CSV file using a Python script (`Extract.py`). Basic transformations, such as handling `NaT` values and enforcing data types, were applied during this stage.
 2.  **Loading:** The transformed data was loaded into a landing zone table (`LZ.sessions_raw`) in a PostgreSQL database.
 3.  **Data Quality Flagging:** An SQL script (`dq_issues_flags.sql`) was executed to analyze the raw data and create a view (`LZ.fallaged_dq_issues`) that flags records with potential quality issues (duplicates, outliers, missing values).
 4.  **Data Cleansing & Decision Making:** A final SQL query (`cleansing_decisions.sql`) was used to apply cleansing rules based on the flags, addressing the identified issues and selecting the final, cleaned data.
 
-*(Refer to the `WorkFlow.drawio.png` diagram for a visual representation of this process.)*
+![Image](https://github.com/user-attachments/assets/850788f8-e9e8-4f81-bd89-c036797951ee)
 
 ## 3. Task Requirements Addressed
 
