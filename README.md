@@ -70,7 +70,7 @@ The following solutions were implemented in the `cleansing_decisions.sql` query 
     *   **Implementation:** Achieved using the `ROW_NUMBER() OVER (PARTITION BY course_session_id ORDER BY created_at DESC)` window function in the `deduped` CTE and filtering for `rn = 1` in the final `SELECT` statement.
  
       After flagging data quality issues in the raw dataset, subsequent cleansing decisions—such as those shown in the final script—become straightforward.
-      sql/dq_checks_enrichment.sql
+      [sql/dq_checks_enrichment.sql](https://github.com/Mouhamed-Jinja/Course-Sessions-Noon-Task/blob/main/sql/dq_checks_enrichment.sql)
       ![Image](https://github.com/user-attachments/assets/62116675-3a72-4678-84bc-e55f4a0dbb96)
 
 ## 5. Final Query for Cleaned Data (Task Point 3)
@@ -78,6 +78,8 @@ The following solutions were implemented in the `cleansing_decisions.sql` query 
 **SQL Dialect:** PostgreSQL
 
 The following query integrates the cleansing logic described above. It returns the original table structure (all columns relevant after cleansing) for the valid, deduplicated records. The `teaching_time` column in the output reflects the corrected value where outliers were replaced.
+[sql/cleansing_decisions.sql](https://github.com/Mouhamed-Jinja/Course-Sessions-Noon-Task/blob/main/sql/cleansing_decisions.sql)
+
 
 ```sql
 -- cleansing_decisions.sql -> Final Query Producing Cleaned Data
