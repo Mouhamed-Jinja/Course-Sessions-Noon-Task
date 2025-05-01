@@ -56,12 +56,17 @@ The following solutions were implemented in the `cleansing_decisions.sql` query 
     *   **Action:** Records flagged with `dq_issue_missing_values = TRUE` were excluded from the final dataset. Additionally, records where `course_session_status = 'planned'` were also excluded, as they represent future or incomplete sessions lacking actual operational data.
     *   **Rationale:** Ensures that the final dataset only contains complete and relevant session records.
     *   **Implementation:** Achieved via the `WHERE NOT dq_issue_missing_values AND course_session_status <> 'planned'` clause in the `filtered` CTE.
+    *   **Clarifications on Missing Value Types:**
+        1.  **Type 1: Complete Timestamp Absence** – When **all** datetime fields are `NULL` (`course_session_scheduled_start_time`, `course_session_scheduled_end_time`, `teacher_start_time`, `teacher_end_time`, plus `course_session_type`, `course_teacher_id`, `teaching_time`), the session is flagged as `planned` for a later time. These rows are excluded because the session did not actually occur.
+        2.  **Type 2: Partial Teacher Timestamp Absence** – When only `teacher_start_time` or `teacher_end_time` is `NULL`, it indicates the teacher did not log in or out properly. By business logic, these incomplete records impact data completeness, so they are also excluded.
 
 *   **Outlier Correction (`teaching_time`):**
     *   **Action:** Records flagged with `dq_issue_teaching_time_outlier = TRUE` had their `teaching_time` value replaced.
-    *   **Replacement Value:** The calculated average `teaching_time` (using `ceil(AVG(teaching_time))`) derived from the *valid* (non-missing, non-outlier, non-planned) records.
+    *   **Replacement Value:** The calculated average `teaching_time` (using `CEIL(AVG(teaching_time))`) derived from the **valid** (non-missing, non-outlier, non-planned) records.
     *   **Rationale:** Mitigates the impact of extreme values on analysis while retaining the session record.
     *   **Implementation:** Achieved using a `CASE` statement in the `replaced` CTE, referencing the average calculated in the `avg_tt` CTE.
+    *   **Clarification on Outlier Handling:** After computing statistical bounds (max/min based on IQR), sessions where the teacher failed to log out (logout time beyond scheduled end) were flagged as outliers. These outliers are replaced with the overall average teaching time to avoid skewing downstream metrics.
+
 
 *   **Deduplication:**
     *   **Action:** For records sharing the same `course_session_id`, only one record was kept.
