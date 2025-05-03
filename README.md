@@ -12,7 +12,8 @@ The data cleansing process followed these general steps:
 3.  **Data Quality Flagging:** An SQL script (`dq_issues_flags.sql`) was executed to analyze the raw data and create a view (`LZ.fallaged_dq_issues`) that flags records with potential quality issues (duplicates, outliers, missing values).
 4.  **Data Cleansing & Decision Making:** A final SQL query (`cleansing_decisions.sql`) was used to apply cleansing rules based on the flags, addressing the identified issues and selecting the final, cleaned data.
 
-![Image](https://github.com/user-attachments/assets/850788f8-e9e8-4f81-bd89-c036797951ee)
+![Image](https://github.com/user-attachments/assets/0310848e-606a-4a7b-b5d7-15e5624aa19d)
+
 
 ## 3. Task Requirements Addressed
 
